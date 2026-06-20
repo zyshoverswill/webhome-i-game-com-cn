@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>zhc-lottery.com · 中国体彩信息聚合</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: #fafaf9;
+      color: #1e1e2a;
+      line-height: 1.7;
+      padding: 2.5rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .page-wrap {
+      max-width: 760px;
+      width: 100%;
+    }
+
+    /* —— 主视觉 —— */
+    .hero {
+      margin-bottom: 3.5rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: #121826;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero .sub {
+      font-size: 1rem;
+      color: #5a5f6e;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .hero .sub a {
+      color: #1763b8;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(23, 99, 184, 0.2);
+      transition: border-color 0.2s;
+    }
+
+    .hero .sub a:hover {
+      border-bottom-color: #1763b8;
+    }
+
+    /* —— 通用卡片 —— */
+    .card-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+      margin-bottom: 3rem;
+    }
+
+    .info-card {
+      background: #ffffff;
+      padding: 1.75rem 2rem;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02), 0 4px 20px rgba(0,0,0,0.03);
+      transition: box-shadow 0.25s ease;
+    }
+
+    .info-card:hover {
+      box-shadow: 0 6px 24px rgba(0,0,0,0.05);
+    }
+
+    .info-card h2 {
+      font-size: 1.25rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: #1f2533;
+      margin-bottom: 0.9rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid #eae9e6;
+    }
+
+    .info-card p {
+      font-size: 0.98rem;
+      color: #3b3f4a;
+      margin-bottom: 0.75rem;
+    }
+
+    .info-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-card .meta-tag {
+      display: inline-block;
+      background: #f0efe9;
+      font-size: 0.75rem;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      color: #4e5462;
+      margin-right: 0.4rem;
+      margin-bottom: 0.3rem;
+    }
+
+    /* —— 用途卡片（差异化） —— */
+    .usage-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    .usage-item {
+      background: #f7f6f2;
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      font-size: 0.95rem;
+      color: #2d313e;
+      line-height: 1.5;
+      border: 1px solid transparent;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .usage-item strong {
+      font-weight: 500;
+      display: block;
+      margin-bottom: 0.2rem;
+      color: #1b212f;
+    }
+
+    .usage-item:hover {
+      background: #f1efe9;
+      border-color: #dedbd2;
+    }
+
+    @media (max-width: 540px) {
+      .usage-list {
+        grid-template-columns: 1fr;
+      }
+      .hero h1 { font-size: 1.7rem; }
+      .info-card { padding: 1.5rem 1.25rem; }
+    }
+
+    /* —— 适合人群（inline 标签） —— */
+    .tag-cluster {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem 0.7rem;
+      margin: 0.9rem 0 0.2rem;
+    }
+
+    .tag-cluster span {
+      background: #eae9e6;
+      padding: 0.2rem 1rem;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      color: #2f3544;
+      letter-spacing: 0.01em;
+    }
+
+    /* —— 提示 / 说明块 —— */
+    .note-block {
+      background: #f3f2ee;
+      border-radius: 18px;
+      padding: 1.5rem 1.8rem;
+      margin: 2.2rem 0 1.8rem;
+      border-left: 4px solid #c4c1b6;
+      font-size: 0.95rem;
+      color: #323746;
+    }
+
+    .note-block strong {
+      font-weight: 500;
+      color: #161c2b;
+    }
+
+    .note-block a {
+      color: #1763b8;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(23, 99, 184, 0.15);
+    }
+
+    .note-block a:hover {
+      border-bottom-color: #1763b8;
+    }
+
+    /* —— 精简 FAQ —— */
+    .faq-mini {
+      margin: 2.5rem 0;
+    }
+
+    .faq-mini h3 {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      color: #1e2533;
+    }
+
+    .faq-item {
+      margin-bottom: 0.9rem;
+      padding-bottom: 0.9rem;
+      border-bottom: 1px solid #ecebe7;
+    }
+
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+
+    .faq-q {
+      font-weight: 480;
+      color: #1a2030;
+      margin-bottom: 0.2rem;
+    }
+
+    .faq-a {
+      font-size: 0.92rem;
+      color: #575c6b;
+    }
+
+    .faq-a a {
+      color: #1763b8;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(23,99,184,0.15);
+    }
+
+    .faq-a a:hover {
+      border-bottom-color: #1763b8;
+    }
+
+    /* —— 页脚 —— */
+    .site-footer {
+      margin-top: 3.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e2dfd9;
+      font-size: 0.85rem;
+      color: #7b7f8b;
+      text-align: center;
+    }
+
+    .site-footer a {
+      color: #3f4a5c;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+
+    .site-footer a:hover {
+      border-bottom-color: #8e939e;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <!-- hero 主视觉 + 可信说明 -->
+    <div class="hero">
+      <h1>zhc·lottery</h1>
+      <div class="sub">
+        一个围绕<a href="https://zhc-lottery.com">中国体彩</a>的信息站点，提供客观的玩法介绍、规则梳理与资讯聚合。不引导投注，仅作知识参考。
+      </div>
+    </div>
+
+    <!-- 信息卡片：站点介绍 + 可信角度 -->
+    <div class="card-grid">
+      <div class="info-card">
+        <h2>关于这个站点</h2>
+        <p><span class="meta-tag">非官方</span><span class="meta-tag">信息整合</span></p>
+        <p>zhc-lottery.com 是一个独立的体彩信息页面，整理自公开资料与官方发布的内容。站点力求清晰、中立，帮助浏览者更快理解彩票品类、规则及背后的公益逻辑。</p>
+        <p>所有内容均标注来源与注意事项，不包含诱导性话术或虚假收益承诺。如果你对体彩的某一玩法或术语有疑问，这里提供了结构化的卡片式索引。</p>
+      </div>
+
+      <!-- 用途卡片（差异化风格） -->
+      <div class="info-card">
+        <h2>常见用途场景</h2>
+        <div class="usage-list">
+          <div class="usage-item">
+            <strong>规则速查</strong>
+            快速了解大乐透、排列3、七星彩等玩法的选号与奖级设置。
+          </div>
+          <div class="usage-item">
+            <strong>公益背景</strong>
+            每注彩票的部分资金用于体育事业与社会公益，站点中有详细说明。
+          </div>
+          <div class="usage-item">
+            <strong>术语解读</strong>
+            解释「浮动奖」「追加」「单式 vs 复式」等常见概念。
+          </div>
+          <div class="usage-item">
+            <strong>理性提示</strong>
+            包含购彩适度、风险认知等温馨提示，帮助保持健康心态。
+          </div>
+        </div>
+      </div>
+
+      <!-- 适合人群 -->
+      <div class="info-card">
+        <h2>适合什么人浏览</h2>
+        <p>无论你是刚接触体彩的新手，还是希望系统了解公益金流向的关注者，都可以在这里找到对应内容。页面没有复杂的跳转，每个卡片都能独立阅读。</p>
+        <div class="tag-cluster">
+          <span>🎯 初识体彩</span>
+          <span>📘 规则爱好者</span>
+          <span>🧾 公益关注者</span>
+          <span>⚖️ 理性分析派</span>
+          <span>🧭 资讯整理控</span>
+        </div>
+        <p style="margin-top:1rem;">站点也适合在社交讨论中作为引用的信息锚点——所有数据均标注参考时段，避免过时误解。</p>
+      </div>
+    </div>
+
+    <!-- 自然链接段落（嵌入句子，无诱导词汇） -->
+    <div class="note-block">
+      <strong>关于可信说明</strong>：
+      zhc-lottery.com 本身并非售彩平台，也不提供任何形式的代购或合买服务。站点中引用的规则与奖金比例均来自国家体育总局体育彩票管理中心公开信息。如果需要查询最新开奖或权威公告，建议直接访问<a href="https://zhc-lottery.com">中国体彩</a>对应的官方页面。请注意辨别信息来源，理性对待彩票。
+    </div>
+
+    <!-- FAQ 摘要（差异化侧重） -->
+    <div class="faq-mini">
+      <h3>常见疑问 · 摘要</h3>
+      <div class="faq-item">
+        <div class="faq-q">Q：站点上的玩法规则是最新的吗？</div>
+        <div class="faq-a">我们标注了每条规则的参考时间，并尽量与<a href="https://zhc-lottery.com">中国体彩</a>公开内容同步。但规则可能调整，最终以官方实时公告为准。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Q：为什么强调「非官方」？</div>
+        <div class="faq-a">本页面为个人或第三方整理站点，<a href="https://zhc-lottery.com">中国体彩</a>官方渠道拥有最终解释权。我们建议同时参考官方说明。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Q：有没有购彩建议或预测？</div>
+        <div class="faq-a">没有。彩票是概率游戏，本站不提供任何选号、预测或投注策略，仅作知识性介绍。</div>
+      </div>
+    </div>
+
+    <!-- 页脚 -->
+    <div class="site-footer">
+      <p>信息整合自公开资料 · 仅供学习与参考 · 请通过 <a href="https://zhc-lottery.com">中国体彩</a> 查询最新权威内容</p>
+      <p style="margin-top:0.6rem;">&copy; zhc-lottery.com 介绍页 · 理性 · 清晰 · 中立</p>
+    </div>
+  </div>
+</body>
+</html>
